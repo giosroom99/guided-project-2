@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "my swap ",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "node ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giosroom99/guided-project-2.githttps:.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/giosroom99/guided-project-2.githttps:/issues"
+  },
+  "homepage": "https://github.com/giosroom99/guided-project-2.githttps:#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
