@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/film" element={<Films />} />
-        <Route path="/planet" element={<Planets />} />
+        <Route path="/planet" element={<Planets planet_id={1} />} />
       </Routes>
     </BrowserRouter>
   );
