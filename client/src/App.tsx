@@ -4,6 +4,7 @@ import "./App.css";
 import Home from "./home/home";
 import Films from "./film/films";
 import Planets from "./planet/planets";
+import Character from "./character/character";
 function App() {
   return (
     <BrowserRouter>
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/film" element={<Films />} />
         <Route path="/planet" element={<Planets />} />
+        <Route path="/character/:characterID" element={<Character />} />
       </Routes>
     </BrowserRouter>
   );

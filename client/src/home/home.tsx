@@ -1,7 +1,19 @@
-export default function Home() {
-  const listOfCharacters = ["Emily", "Liam", "Sophia", "Jackson", "Olivia"];
+import { useEffect, useState } from "react";
+import { fetchData } from "../utils/apiCalls";
+import { Link } from "react-router-dom";
 
-  if (!listOfCharacters) {
+export default function Home() {
+  const [charactersData, setCharactersData] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await fetchData("characters");
+      setCharactersData(await data);
+    };
+    getData();
+  }, []);
+
+  if (!charactersData) {
     return <>Nothing to see here</>;
   }
   return (
@@ -17,9 +29,13 @@ export default function Home() {
       </div>
 
       <section id="charactersList">
-        {listOfCharacters.map((character, index) => (
+        {charactersData.map((character, index) => (
           <p key={index}>
-            <span id="character">{character}</span>
+            <Link to={`/character/${character.id}`}>
+              <span className="badge bg-primary m-2" id="character">
+                {character.name}
+              </span>
+            </Link>
           </p>
         ))}
       </section>
