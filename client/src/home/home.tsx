@@ -17,18 +17,24 @@ export default function Home() {
     return <>Nothing to see here</>;
   }
   return (
-    <div>
-      <div>
-        <h1 className="text-center">Star Wars Universe Lookup</h1>
-        <label htmlFor="searchString">
+    <div className="container">
+      <div className="row my-3">
+        <h1 className="text-center my-3">Star Wars Universe Lookup</h1>
+        <label className="my-2" htmlFor="searchString">
           Who you looking for?{" "}
           <span className="small text-cente">
             (Regular expressions are cool here)
           </span>
         </label>
+        <input
+          className="form-control"
+          type="text"
+          placeholder="Default input"
+          aria-label="default input example"
+        ></input>
       </div>
 
-      <section id="charactersList">
+      <section className="" id="charactersList">
         {charactersData.map((character, index) => (
           <p key={index}>
             <Link to={`/character/${character.id}`}>
