@@ -4,8 +4,8 @@ const router = express.Router();
 const Films = require("./models/Films");
 const Planets = require("./models/Planets");
 const Characters = require("./models/Characters");
-const Film_Characters = require("./models/Film_Characters");
-const Film_Planets = require("./models/Film_Planets");
+const Films_Characters = require("./models/Films_Characters");
+const Films_Planets = require("./models/Films_Planets");
 
 // Get all films
 router.get("/films", async (req, res) => {
@@ -82,33 +82,35 @@ router.get("/planets/:id", async (req, res) => {
   }
 });
 
-// Get film_characters by Film ID
-router.get("/film_characters/:id", async (req, res) => {
+router.get("/planets/:id", async (req, res) => {
   try {
-    let film_characters = await Film_Characters.find({
-      film_id: req.params.id,
-    });
+    let planets = await Planets.find({ id: req.params.id });
 
-    if (!film_characters) {
+    if (!planets) {
       return res.status(404);
     }
 
-    res.json(film_characters);
+    res.json(planets[0]);
   } catch (error) {
     res.status(500);
   }
 });
 
-// Get film_planets by Film ID
-router.get("/film_planets/:id", async (req, res) => {
+router.get("/films/:id/characters", async (req, res) => {
   try {
-    let film_planets = await Film_Planets.find({ film_id: req.params.id });
+    let films_characters = await Films_Characters.find({
+      film_id: req.params.id,
+    }).lean();
+    let characters = await Characters.find().lean();
 
-    if (!film_planets) {
-      return res.status(404);
-    }
-    console.log(film_planets);
-    res.json(film_planets);
+    let characters_ids = films_characters.map(
+      (element) => element.character_id
+    );
+    characters = characters.filter((character) =>
+      characters_ids.includes(character.id)
+    );
+
+    res.json(characters);
   } catch (error) {
     res.status(500);
   }

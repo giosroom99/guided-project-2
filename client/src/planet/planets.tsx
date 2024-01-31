@@ -1,11 +1,21 @@
+import { useEffect, useState } from "react";
 import { fetchData } from "../utils/apiCalls";
 
-function Planets() {
-  console.log(fetchData("planets"));
+function Planets(props) {
+  const [planet, setPlanet] = useState({});
+
+  useEffect(() => {
+    const fetchPlanet = async () => {
+      const planetData = await fetchData("planets", props.planet_id);
+      setPlanet(planetData);
+    }
+
+    fetchPlanet();
+  }, []);
   
   return (
     <div className="container">
-      <h1 className="text-center">A Star Wars Planet</h1>
+      <h1 className="text-center">{planet.name}</h1>
     </div>
   );
 }
