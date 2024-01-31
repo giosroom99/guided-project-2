@@ -68,7 +68,11 @@ function Character() {
         <div className="mt-5">
           <h1>Homeworld</h1>
           <h5>
-            <span className="badge bg-primary">{characterData.planetName}</span>
+            <Link to={`/planet/${characterData.homeworld}`}>
+              <span className="badge bg-primary">
+                {characterData.planetName}
+              </span>
+            </Link>
           </h5>
           <p></p>
         </div>
@@ -78,7 +82,7 @@ function Character() {
           {characterData.films ? (
             characterData.films.map((film, index) => (
               <h5 key={index}>
-                <Link to={`/films/${film.id}`}>
+                <Link to={`/film/${film.id}`}>
                   <span className="badge bg-primary">{film.title}</span>
                 </Link>
               </h5>

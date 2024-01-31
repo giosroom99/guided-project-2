@@ -10,15 +10,20 @@ function Film() {
 
   useEffect(() => {
     const getData = async () => {
-      let data = await fetchData("films", Number(filmID));
-      const planet = await fetchData("planets", Number(data.homeworld));
-      const characterFilms = await fetchData(
-        `characters/${Number(filmID)}/films`
-      );
-      data.planetName = planet.name;
-      data.films = characterFilms.map((film) => {
-        return { id: film.id, title: film.title };
+      ///films/1
+      let data = await fetchData(`films/${Number(filmID)}`);
+      // http://localhost:3000/api/films/1/planets
+      const filmPlanet = await fetchData(`films/${Number(filmID)}/planets`);
+      data.planets = filmPlanet.map((planet) => {
+        return { id: planet.id, name: planet.name };
       });
+      const filmCharacter = await fetchData(
+        `films/${Number(filmID)}/characters`
+      );
+      data.characters = filmCharacter.map((character) => {
+        return { id: character.id, name: character.name };
+      });
+
       console.log(data);
       setFilmData(await data);
     };
@@ -46,43 +51,55 @@ function Film() {
             <h5 className="card-title">{filmData.title}</h5>
             <p className="card-text d-block">
               {" "}
-              <span className="fw-bold">Gender:</span> {filmData.gender}
+              <span className="fw-bold">Producer:</span> {filmData.producer}
+            </p>
+            <p className="card-text d-block">
+              {" "}
+              <span className="fw-bold">Director:</span> {filmData.director}
             </p>
             <p className="card-text ">
               {" "}
-              <span className="fw-bold">Birthdate:</span> {filmData.birth_year}
+              <span className="fw-bold">released_date:</span>{" "}
+              {filmData.release_date}
             </p>
+
             <p className="card-text d-inline">
               {" "}
-              <span className="fw-bold">Height:</span> {filmData.height}
-            </p>
-            <p className="card-text d-inline">
-              {" "}
-              <span className="fw-bold">Mass:</span> {filmData.mass}
+              <span className="fw-bold">Opening crawl:</span>{" "}
+              {filmData.opening_crawl}
             </p>
           </div>
         </div>
 
         <div className="mt-5">
-          <h1>Homeworld</h1>
-          <h5>
-            <span className="badge bg-primary">{filmData.planetName}</span>
-          </h5>
-          <p></p>
-        </div>
-
-        <div className="mt-5">
-          <h1>Film appeared in</h1>
-          {filmData.films ? (
-            filmData.films.map((film, index) => (
-              <h5 key={index}>
-                <Link to={`/films/${film.id}`}>
-                  <span className="badge bg-primary">{film.title}</span>
+          <h1>Planets appeared in this film</h1>
+          {filmData.planets ? (
+            filmData.planets.map((planet, index) => (
+              <h5 className="d-inline m-2" key={index}>
+                <Link to={`/planet/${planet.id}`}>
+                  <span className="badge bg-primary">{planet.name}</span>
                 </Link>
               </h5>
             ))
           ) : (
-            <p>No films data available</p>
+            <p>No planets data available</p>
+          )}
+
+          <p></p>
+        </div>
+
+        <div className="mt-5">
+          <h1>Characters appeared in this film</h1>
+          {filmData.characters ? (
+            filmData.characters.map((character, index) => (
+              <h5 className="d-inline m-2" key={index}>
+                <Link to={`/character/${character.id}`}>
+                  <span className="badge bg-primary">{character.name}</span>
+                </Link>
+              </h5>
+            ))
+          ) : (
+            <p>No characters data available</p>
           )}
 
           <p></p>
