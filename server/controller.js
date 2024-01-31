@@ -96,7 +96,7 @@ router.get("/planets/:id", async (req, res) => {
     }
 });
 
-// Get film_characters by Film ID
+// Get characters by Film ID
 router.get("/films/:id/characters", async (req, res) => {
     try {
         let films_characters = await Films_Characters.find({film_id: req.params.id}).lean();
@@ -111,7 +111,7 @@ router.get("/films/:id/characters", async (req, res) => {
     }
 });
 
-// Get film_planets by Film ID
+// Get planets by Film ID
 router.get("/films/:id/planets", async (req, res) => {
     try {
         let films_planets = await Films_Planets.find({film_id: req.params.id}).lean();
@@ -121,6 +121,47 @@ router.get("/films/:id/planets", async (req, res) => {
         planets = planets.filter((planet) => planets_ids.includes(planet.id));
 
         res.json(planets);
+    } catch (error) {
+        res.status(500);
+    }
+});
+
+// Get films by character id
+router.get("/characters/:id/films", async (req, res) => {
+    try {
+        let films_characters = await Films_Characters.find({character_id: req.params.id}).lean();
+        let films = await Films.find().lean();
+
+        let films_ids = films_characters.map((element) => element.film_id);
+        films = films.filter((film) => films_ids.includes(film.id));
+
+        res.json(films);
+    } catch (error) {
+        res.status(500);
+    }
+});
+
+// Get films by planet id
+router.get("/planets/:id/films", async (req, res) => {
+    try {
+        let films_planets = await Films_Planets.find({planet_id: req.params.id}).lean();
+        let films = await Films.find().lean();
+
+        let films_ids = films_planets.map((element) => element.film_id);
+        films = films.filter((film) => films_ids.includes(film.id));
+
+        res.json(films);
+    } catch (error) {
+        res.status(500);
+    }
+});
+
+// Get characters by planet id
+router.get("/planets/:id/characters", async (req, res) => {
+    try {
+        let characters = await Characters.find({homeworld: req.params.id});
+
+        res.json(characters);
     } catch (error) {
         res.status(500);
     }
