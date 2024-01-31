@@ -1,8 +1,9 @@
 import { fetchData } from "../utils/apiCalls";
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-function Planets() {
+function Character() {
   const { characterID } = useParams();
   console.log();
 
@@ -10,7 +11,15 @@ function Planets() {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await fetchData("characters", Number(characterID));
+      let data = await fetchData("characters", Number(characterID));
+      const planet = await fetchData("planets", Number(data.homeworld));
+      const characterFilms = await fetchData(
+        `characters/${Number(characterID)}/films`
+      );
+      data.planetName = planet.name;
+      data.films = characterFilms.map((film) => {
+        return { id: film.id, title: film.title };
+      });
       console.log(data);
       setCharacterData(await data);
     };
@@ -59,16 +68,25 @@ function Planets() {
         <div className="mt-5">
           <h1>Homeworld</h1>
           <h5>
-            <span className="badge bg-primary">{characterData.homeworld}</span>
+            <span className="badge bg-primary">{characterData.planetName}</span>
           </h5>
           <p></p>
         </div>
 
         <div className="mt-5">
           <h1>Film appeared in</h1>
-          <h5>
-            <span className="badge bg-primary">{characterData.homeworld}</span>
-          </h5>
+          {characterData.films ? (
+            characterData.films.map((film, index) => (
+              <h5 key={index}>
+                <Link to={`/films/${film.id}`}>
+                  <span className="badge bg-primary">{film.title}</span>
+                </Link>
+              </h5>
+            ))
+          ) : (
+            <p>No films data available</p>
+          )}
+
           <p></p>
         </div>
       </div>
@@ -76,4 +94,4 @@ function Planets() {
   );
 }
 
-export default Planets;
+export default Character;
