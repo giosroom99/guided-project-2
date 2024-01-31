@@ -116,4 +116,21 @@ router.get("/films/:id/characters", async (req, res) => {
   }
 });
 
+
+// Get film_planets by Film ID
+router.get("/films/:id/planets", async (req, res) => {
+    try {
+        let films_planets = await Films_Planets.find({film_id: req.params.id}).lean();
+        let planets = await Planets.find().lean();
+
+        let planets_ids = films_planets.map((element) => element.planet_id);
+        planets = planets.filter((planet) => planets_ids.includes(planet.id));
+
+        res.json(planets);
+    } catch (error) {
+        res.status(500);
+    }
+});
+
+
 module.exports = router;
